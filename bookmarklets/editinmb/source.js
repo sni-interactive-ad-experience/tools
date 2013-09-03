@@ -14,12 +14,18 @@
         return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
     }
 
-    if( w.location.host === 'scrippsonline.com' && w.location.pathname === '/mockingbird2/previewPageClient.php'){
+    // Only allow Mockingbird URLs
+    if( w.location.href.indexOf('mockingbird2') > -1 ){
         var pid = getParameterByName('pid');
-        var mid = getParameterByName('mockid');
-        var editUrl = 'http://scrippsonline.com/mockingbird2/previewFormEdit.php?mockid=' + mid + '&pid=' + pid;
-        w.open(editUrl, '_self');
+        var mockid = getParameterByName('mockid');
+        // Current page must have a pid and mockid
+        if( pid && mockid ){
+            var editUrl = 'http://scrippsonline.com/mockingbird2/previewFormEdit.php?mockid=' + mockid + '&pid=' + pid;
+            w.open(editUrl, '_self');
+        } else {
+            alert('Current page is not a MB preview page.');
+        }
     } else {
-        alert('Must be on a Mockingbird 2 preview url.');
+        alert('Current page is not a MB preview page.');
     }
 })(window);
